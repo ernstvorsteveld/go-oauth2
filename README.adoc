@@ -1,0 +1,5 @@
+= OAUTH2
+
+This repository contains the domain model for OAUTH2.
+
+The model is based upon: https://tools.ietf.org/html/rfc6749[RFC6749]
