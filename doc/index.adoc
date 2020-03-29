@@ -1,0 +1,42 @@
+= OAUTH2
+:toc: left
+:toclevels: 4
+:author: Ernst Vorsteveld
+:email: ernst.vorsteveld@gmail.com
+:revnumber: 0.1
+:revdate: 29/03/2020
+:revremark: Development
+:version-label!:
+:sectnums:
+
+== Authentication of the request
+
+=== Authorisation header (MUST)
+
+Header: Authorisation: Basic Base64Encoded(<client_id>:<client_secret>)
+
+=== Body parameters (MAY)
+
+[source,bash]
+----
+POST /token HTTP/1.1
+Host: server.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
+&client_id=s6BhdRkqt3&client_secret=7Fjfp0ZBr1KtDRbnfVdmIw
+----
+
+== Authorization Code Grant
+
+=== Request
+
+* response_type = code
+* client_id required
+* redirect_uri = optional
+* scope = optional
+* state = recommended
+
+=== Response
+
+* code = required

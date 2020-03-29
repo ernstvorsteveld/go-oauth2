@@ -3,3 +3,20 @@
 This repository contains the domain model for OAUTH2.
 
 The model is based upon: https://tools.ietf.org/html/rfc6749[RFC6749]
+
+== Considerations
+
+=== Require redirection endpoint
+
+AS MUT require clients to register theri redirection endpoint:
+
+* public clients
+* confidential clients utilizing the implicit grant type
+
+The AS SHOULD require all clients to register their redirection endpoint
+
+=== Number of redirection endpoints in client
+
+Comparing URI's is done using simple string comparison
+
+Scope management
