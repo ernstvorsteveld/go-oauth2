@@ -18,8 +18,17 @@ func newValiditySpecificationType(duration time.Duration) ValiditySpecificationT
 
 var defaultDuration, _ = time.ParseDuration("10s")
 
-func fmtDuration(d time.Duration) string {
-	return fmt.Sprintf("%v", d)
+func duration(durationString *string) (time.Duration, error) {
+	var duration = defaultDuration
+	if durationString == nil {
+		return duration, nil
+	}
+	duration, err := time.ParseDuration(*durationString)
+	if err != nil {
+		return defaultDuration, fmt.Errorf("Parsing %s failed. It is not a duration.", *durationString)
+	}
+
+	return duration, nil
 }
 
 func NewAuthorisationCodeType(validPeriod *string) AuthorisationCodeType {
@@ -32,19 +41,6 @@ func NewAuthorisationCodeType(validPeriod *string) AuthorisationCodeType {
 		validity: newValiditySpecificationType(duration),
 	}
 	return ac
-}
-
-func duration(durationString *string) (time.Duration, error) {
-	var duration = defaultDuration
-	if durationString == nil {
-		return duration, nil
-	}
-	duration, err := time.ParseDuration(*durationString)
-	if err != nil {
-		return defaultDuration, fmt.Errorf("Parsing %s failed. It is not a duration.", *durationString)
-	}
-
-	return duration, nil
 }
 
 type AuthorisationCode interface {
@@ -65,6 +61,6 @@ func (c AuthorisationCodeType) String() string {
 	return fmt.Sprintf("AuthorisationCode[%s] issued at[%s], duration [%s] and expires [%s].",
 		c.code,
 		c.validity.issued_at.Format(time.RFC3339),
-		fmtDuration(c.validity.valid_duration),
+		fmt.Sprintf("%v", c.validity.valid_duration),
 		c.validity.valid_until.Format(time.RFC3339))
 }
