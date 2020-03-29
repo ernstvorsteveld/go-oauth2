@@ -3,18 +3,8 @@ package oauth2
 import (
 	"fmt"
 	"github.com/ernstvorsteveld/go-random"
-	"log"
 	"time"
 )
-
-func newValiditySpecificationType(duration time.Duration) ValiditySpecificationType {
-	v := ValiditySpecificationType{
-		issued_at:      time.Now(),
-		valid_until:    time.Now().Add(duration),
-		valid_duration: duration,
-	}
-	return v
-}
 
 var defaultDuration, _ = time.ParseDuration("10s")
 
@@ -32,13 +22,14 @@ func duration(durationString *string) (time.Duration, error) {
 }
 
 func NewAuthorisationCodeType(validPeriod *string) AuthorisationCodeType {
-	duration, err := duration(validPeriod)
+	validity, err := NewValiditySpecificationType(*validPeriod)
 	if err != nil {
-		log.Fatal(err)
+		error.Error(err)
 	}
+
 	var ac AuthorisationCodeType = AuthorisationCodeType{
 		code:     randomstring.String(15),
-		validity: newValiditySpecificationType(duration),
+		validity: validity,
 	}
 	return ac
 }

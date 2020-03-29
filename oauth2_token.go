@@ -5,49 +5,70 @@ import (
 )
 
 type TokenValueType uuid.UUID
+
+func NewTokenVal() TokenValueType {
+	return TokenValueType(uuid.New())
+}
+
 type UserIdType uuid.UUID
 
-type Token struct {
+type TokenType struct {
 	value    TokenValueType
 	validity ValiditySpecificationType
 }
 
-type TokenType int
+type TokenTypeType int
 
 const (
-	Access_token TokenType = iota
+	Access_token TokenTypeType = iota
 	Refresh_token
 )
 
-var tokenTypes = map[string]TokenType{
+var tokenTypes = map[string]TokenTypeType{
 	"access_token":  Access_token,
 	"refresh_token": Refresh_token,
 }
 
-func (t TokenType) TokenTypeCode() string {
+func (t TokenTypeType) TokenTypeCode() string {
 	return [...]string{
 		"access_token",
 		"refresh_token",
 	}[t]
 }
 
-func TokenTypeValueOf(val string) TokenType {
+func TokenTypeValueOf(val string) TokenTypeType {
 	tokenType := tokenTypes[val]
 	return tokenType
 }
 
 type Oauth2TokenType struct {
-	token_type TokenType
-	token      Token
+	token_type TokenTypeType
+	token      TokenType
 	client_id  ClientIdType
 	user_id    UserIdType
 }
 
-func NewOauth2Token(token_type string) Oauth2TokenType {
-	token := Oauth2TokenType{}
+func newToken() TokenType {
+	validity, _ := NewValiditySpecificationType("10s")
+	token := TokenType{
+		value:    NewTokenVal(),
+		validity: validity,
+	}
+	return token
+}
+
+func NewOauth2Token(tokenTypeValue string) Oauth2TokenType {
+	tokenType := TokenTypeValueOf(tokenTypeValue)
+	token := Oauth2TokenType{
+		token_type: tokenType,
+		token:      newToken(),
+	}
 	return token
 }
 
 type Oauth2Token interface {
 	IsValid() bool
+	GetClientId() ClientIdType
+	GetUserId() UserIdType
+	String() string
 }

@@ -2,7 +2,6 @@ package oauth2
 
 import (
 	"net/url"
-	"time"
 )
 
 type AuthorisationCodeType struct {
@@ -11,12 +10,6 @@ type AuthorisationCodeType struct {
 }
 
 type StateType string
-
-type ValiditySpecificationType struct {
-	issued_at      time.Time
-	valid_until    time.Time
-	valid_duration time.Duration
-}
 
 type ResponseType int
 
