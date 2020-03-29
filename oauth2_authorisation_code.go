@@ -18,14 +18,12 @@ func newValiditySpecificationType(duration time.Duration) ValiditySpecificationT
 
 var defaultDuration, _ = time.ParseDuration("10s")
 
-type AuthorisationCode interface {
-	GetCode() string
-	IsValid() bool
-	String() string
+func fmtDuration(d time.Duration) string {
+	return fmt.Sprintf("%v", d)
 }
 
 func NewAuthorisationCodeType(validPeriod *string) AuthorisationCodeType {
-	duration, err := getDuration(validPeriod)
+	duration, err := duration(validPeriod)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +34,7 @@ func NewAuthorisationCodeType(validPeriod *string) AuthorisationCodeType {
 	return ac
 }
 
-func getDuration(durationString *string) (time.Duration, error) {
+func duration(durationString *string) (time.Duration, error) {
 	var duration = defaultDuration
 	if durationString == nil {
 		return duration, nil
@@ -47,6 +45,12 @@ func getDuration(durationString *string) (time.Duration, error) {
 	}
 
 	return duration, nil
+}
+
+type AuthorisationCode interface {
+	GetCode() string
+	IsValid() bool
+	String() string
 }
 
 func (c AuthorisationCodeType) GetCode() string {
@@ -63,8 +67,4 @@ func (c AuthorisationCodeType) String() string {
 		c.validity.issued_at.Format(time.RFC3339),
 		fmtDuration(c.validity.valid_duration),
 		c.validity.valid_until.Format(time.RFC3339))
-}
-
-func fmtDuration(d time.Duration) string {
-	return fmt.Sprintf("%v", d)
 }
