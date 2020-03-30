@@ -4,11 +4,6 @@ import (
 	"net/url"
 )
 
-type AuthorisationCodeType struct {
-	code     string
-	validity ValiditySpecificationType
-}
-
 type StateType string
 
 type ResponseType int

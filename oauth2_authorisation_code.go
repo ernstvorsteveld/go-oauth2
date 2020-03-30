@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+type AuthorisationCodeType struct {
+	code     string
+	validity ValiditySpecificationType
+}
+
 var defaultDuration, _ = time.ParseDuration("10s")
 
 func duration(durationString *string) (time.Duration, error) {
@@ -22,7 +27,11 @@ func duration(durationString *string) (time.Duration, error) {
 }
 
 func NewAuthorisationCodeType(validPeriod *string) AuthorisationCodeType {
-	validity, err := NewValiditySpecificationType(*validPeriod)
+	duration := ""
+	if validPeriod != nil {
+		duration = *validPeriod
+	}
+	validity, err := NewValiditySpecificationType(duration)
 	if err != nil {
 		error.Error(err)
 	}
