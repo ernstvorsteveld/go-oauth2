@@ -65,25 +65,11 @@ type ClientMetadata struct {
 type secondsSinds int64
 
 type ClientInformation struct {
-	client_id                  ClientIdType
-	client_secret              password.Password
-	client_id_issued_at        secondsSinds
-	client_secret_expires_at   secondsSinds
-	redirect_uris              []url.URL
-	token_endpoint_auth_method TokenEndpointAuthMethodType
-	grant_types                []GrantTypeType
-	response_types             ResponseType
-	client_name                string
-	client_uri                 url.URL
-	logo_uri                   url.URL
-	scope                      []string
-	contacts                   []EmailAddress
-	tos_uri                    url.URL
-	policyt_uri                url.URL
-	jwks_uri                   url.URL
-	jwks                       url.URL
-	software_id                uuid.UUID
-	software_version           string
+	client_id                ClientIdType
+	client_secret            password.Password
+	client_id_issued_at      secondsSinds
+	client_secret_expires_at secondsSinds
+	client_meta_data         ClientMetadata
 }
 
 type RegistrationErrorType int
