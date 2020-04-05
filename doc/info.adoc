@@ -11,3 +11,5 @@ var anyJson map[string]interface{}
 json.Unmarshal(bytes, &anyJson)
 
 anyJson["id"].(string)
+
+
