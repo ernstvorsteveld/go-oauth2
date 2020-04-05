@@ -6,13 +6,27 @@ import (
 	"net/url"
 )
 
+type ClientTepe int
+
 const (
-	confidential ClientType = iota + 1
-	public
+	Confidential ClientType = iota
+	Public
 )
 
+var clientTypes = map[string]ClientType{
+	"confidential": Confidential,
+	"public":       Public,
+}
+
 func (d ClientType) String() string {
-	return [...]string{"confidential", "public"}[d]
+	return [...]string{
+		"confidential",
+		"public"}[d]
+}
+
+func ClientTypeValueOf(val string) ClientType {
+	clientType := clientTypes[val]
+	return clientType
 }
 
 type ClientIdType uuid.UUID
@@ -62,13 +76,13 @@ type ClientMetadata struct {
 	software_version           string
 }
 
-type secondsSinds int64
+type SecondsSinds int64
 
 type ClientInformation struct {
 	client_id                ClientIdType
 	client_secret            password.Password
-	client_id_issued_at      secondsSinds
-	client_secret_expires_at secondsSinds
+	client_id_issued_at      SecondsSinds
+	client_secret_expires_at SecondsSinds
 	client_meta_data         ClientMetadata
 }
 
@@ -88,11 +102,15 @@ var registrationErrorTypes = map[string]RegistrationErrorType{
 	"uapproved_software":      Uapproved_software_statement,
 }
 
-func (t RegistrationErrorType) RegistrationErrorType() string {
+func (r RegistrationErrorType) String() string {
 	return [...]string{
 		"invalid_redirect_uri",
 		"invalid_client_metadata",
 		"invalid_software",
 		"uapproved_software",
-	}[t]
+	}[r]
+}
+
+func RegistrationErrorTypeValueOf(s string) RegistrationErrorType {
+	return registrationErrorTypes[s]
 }
