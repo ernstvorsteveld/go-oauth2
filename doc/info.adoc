@@ -1,0 +1,13 @@
+
+
+the controllers unpack the HttpRequest object into a simple vanilla data 
+structure, and then pass that data structure to an interactor object that 
+implements the use case by invoking business objects.
+
+
+var bytes := "{"id": "id1","name" : "myName"}"
+
+var anyJson map[string]interface{}
+json.Unmarshal(bytes, &anyJson)
+
+anyJson["id"].(string)
